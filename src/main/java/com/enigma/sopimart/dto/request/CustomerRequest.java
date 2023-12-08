@@ -1,4 +1,4 @@
-package com.enigma.sopimart.dto.response;
+package com.enigma.sopimart.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class StoreResponse {
-    private String id;
-    private String noSiup;
+public class CustomerRequest {
+    private Integer id;
     private String name;
     private String address;
     private String mobilePhone;
+    private String email;
 }

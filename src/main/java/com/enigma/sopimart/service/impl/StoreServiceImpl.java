@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,26 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreResponse create(StoreRequest storeRequest) {
+    public StoreResponse creates(StoreRequest storeRequest) {
+        Store store = Store.builder()
+                .name(storeRequest.getName())
+                .noSiup(storeRequest.getNoSiup())
+                .address(storeRequest.getAddress())
+                .mobilePhone(storeRequest.getMobilePhone())
+                .build();
+       store = storeRepository.save(store);
+
+        return StoreResponse.builder()
+                .id(store.getId())
+                .name(store.getName())
+                .noSiup(store.getNoSiup())
+                .address(store.getAddress())
+                .mobilePhone(store.getMobilePhone())
+                .build();
+    }
+
+    @Override
+    public StoreResponse updateStore(StoreRequest storeRequest) {
         Store store = Store.builder()
                 .name(storeRequest.getName())
                 .noSiup(storeRequest.getNoSiup())
@@ -55,8 +75,39 @@ public class StoreServiceImpl implements StoreService {
         storeRepository.save(store);
 
         return StoreResponse.builder()
-                .storeName(store.getName())
+                .name(store.getName())
                 .noSiup(store.getNoSiup())
+                .address(store.getAddress())
+                .mobilePhone(store.getMobilePhone())
                 .build();
+    }
+
+    @Override
+    public StoreResponse getByIds(String id) {
+      Store store =  storeRepository.findById(id).orElse(null);
+
+        if (store == null) {
+            return null;
+        }
+        return StoreResponse.builder()
+                .id(store.getId())
+                .name(store.getName())
+                .noSiup(store.getNoSiup())
+                .address(store.getAddress())
+                .mobilePhone(store.getMobilePhone())
+                .build();
+    }
+
+    @Override
+    public List<StoreResponse> getAllStore() {
+        List<Store> listStore = storeRepository.findAll();
+        return listStore.stream().map(
+                store -> StoreResponse.builder()
+                        .id(store.getId())
+                        .noSiup(store.getNoSiup())
+                        .name(store.getName())
+                        .address(store.getAddress())
+                        .mobilePhone(store.getMobilePhone()).build()
+        ).collect(Collectors.toList());
     }
 }

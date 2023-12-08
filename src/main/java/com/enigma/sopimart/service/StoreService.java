@@ -12,5 +12,12 @@ public interface StoreService {
     List<Store> getAll();
     Store update (Store store);
     void delete (String id);
-    StoreResponse create (StoreRequest storeRequest);
+    StoreResponse creates (StoreRequest storeRequest);
+
+    StoreResponse getByIds (String id);
+
+    List<StoreResponse> getAllStore ();
+
+    StoreResponse updateStore (StoreRequest storeRequest);
+
 }
