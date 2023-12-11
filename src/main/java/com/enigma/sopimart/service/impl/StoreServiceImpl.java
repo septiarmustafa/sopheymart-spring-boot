@@ -66,7 +66,11 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public StoreResponse updateStore(StoreRequest storeRequest) {
-        Store store = Store.builder()
+        Store store = storeRepository.findById(storeRequest.getId()).orElse(null);
+        if (store ==null) {
+            return  null;
+        }
+        store = Store.builder()
                 .id(storeRequest.getId())
                 .name(storeRequest.getName())
                 .noSiup(storeRequest.getNoSiup())
@@ -74,7 +78,6 @@ public class StoreServiceImpl implements StoreService {
                 .mobilePhone(storeRequest.getMobilePhone())
                 .build();
         store = storeRepository.save(store);
-
         return StoreResponse.builder()
                 .id(store.getId())
                 .name(store.getName())

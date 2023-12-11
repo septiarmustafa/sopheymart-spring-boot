@@ -28,13 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer = customerRepository.save(customer);
 
-        return CustomerResponse.builder()
-                .id(customer.getId())
-                .name(customer.getName())
-                .address(customer.getAddress())
-                .mobilePhone(customer.getMobilePhone())
-                .email(customerRequest.getEmail())
-                .build();
+        return custResponse(customer, customerRequest.getEmail());
     }
 
     @Override
@@ -44,25 +38,14 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer == null) {
             return null;
         }
-        return CustomerResponse.builder()
-                .id(customer.getId())
-                .name(customer.getName())
-                .address(customer.getAddress())
-                .mobilePhone(customer.getMobilePhone())
-                .email(customer.getEmail())
-                .build();
+        return custResponse(customer, customer.getEmail());
     }
 
     @Override
     public List<CustomerResponse> getAllCustomer() {
         List<Customer> listCustomer = customerRepository.findAll();
         return listCustomer.stream().map(
-                customer -> CustomerResponse.builder()
-                        .id(customer.getId())
-                        .name(customer.getName())
-                        .address(customer.getAddress())
-                        .mobilePhone(customer.getMobilePhone())
-                        .email(customer.getEmail()).build())
+                customer -> custResponse(customer, customer.getEmail()))
                 .collect(Collectors.toList());
     }
 
@@ -78,13 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .email(customerRequest.getEmail())
                 .build();
            customerRepository.save(customer);
-           return CustomerResponse.builder()
-                   .id(customer.getId())
-                   .name(customer.getName())
-                   .address(customer.getAddress())
-                   .mobilePhone(customer.getMobilePhone())
-                   .email(customer.getEmail())
-                   .build();
+           return custResponse(customer, customer.getEmail());
        }
        return null;
     }
@@ -92,5 +69,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(Integer id) {
         customerRepository.deleteById(id);
+    }
+
+    private static CustomerResponse custResponse(Customer customer, String customer1) {
+        return CustomerResponse.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .address(customer.getAddress())
+                .mobilePhone(customer.getMobilePhone())
+                .email(customer1)
+                .build();
     }
 }
