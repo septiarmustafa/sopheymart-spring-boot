@@ -26,8 +26,8 @@ public class CustomerController {
         return customerService.updateCustomer(CustomerRequest);
     }
 
-    @GetMapping(value = "/{id}")
-    public CustomerResponse getById(@PathVariable Integer id){
+    @GetMapping(value = AppPath.ID)
+    public CustomerResponse getById(@PathVariable String id){
         return customerService.getById(id);
     }
 
@@ -36,8 +36,8 @@ public class CustomerController {
         return customerService.getAllCustomer();
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Integer id){
+    @DeleteMapping(value = AppPath.ID)
+    public void delete(@PathVariable String id){
         customerService.deleteCustomer(id);
     }
 

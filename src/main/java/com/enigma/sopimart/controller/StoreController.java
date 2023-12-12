@@ -36,7 +36,7 @@ public class StoreController {
         return storeService.getAllStore();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = AppPath.ID)
     public void delete(@PathVariable String id){
         storeService.delete(id);
     }

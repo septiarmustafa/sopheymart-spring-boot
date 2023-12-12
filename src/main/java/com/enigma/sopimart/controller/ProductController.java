@@ -1,5 +1,6 @@
 package com.enigma.sopimart.controller;
 
+import com.enigma.sopimart.constant.AppPath;
 import com.enigma.sopimart.dto.request.ProductRequest;
 import com.enigma.sopimart.dto.response.CommonResponse;
 import com.enigma.sopimart.dto.response.ProductResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/product")
+@RequestMapping(AppPath.PRODUCT)
 public class ProductController {
 
     private final ProductService productService;

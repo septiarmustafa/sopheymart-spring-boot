@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponse getById(Integer id) {
+    public CustomerResponse getById(String id) {
         Customer customer = customerRepository.findById(id).orElse(null);
 
         if (customer == null) {
@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(Integer id) {
+    public void deleteCustomer(String id) {
         customerRepository.deleteById(id);
     }
 

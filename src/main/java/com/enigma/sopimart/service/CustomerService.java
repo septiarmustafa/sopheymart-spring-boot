@@ -9,10 +9,10 @@ public interface CustomerService {
 
     CustomerResponse create (CustomerRequest customerRequest);
 
-    CustomerResponse getById (Integer id);
+    CustomerResponse getById (String id);
 
     List<CustomerResponse> getAllCustomer ();
 
     CustomerResponse updateCustomer (CustomerRequest customerRequest);
-    void deleteCustomer (Integer id);
+    void deleteCustomer (String id);
 }
