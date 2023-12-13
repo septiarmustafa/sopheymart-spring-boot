@@ -14,10 +14,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -154,6 +151,10 @@ public class ProductServiceImpl implements ProductService {
             return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
         };
         Pageable pageable = PageRequest.of(page, size);
+
+        // pageabale sebuah interface dari package spring framwork
+        //Cara paling umum untuk membuat sebuah Pageable instance adalah dengan menggunakan PageRequest implementasi:
+
         Page<Product> products = productRepository.findAll(specification,pageable);
         // ini digunakan untuk menyimpan response product yang baru
         List<ProductResponse> productResponses = new ArrayList<>();
