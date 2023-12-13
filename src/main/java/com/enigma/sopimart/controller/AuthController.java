@@ -3,7 +3,6 @@ package com.enigma.sopimart.controller;
 import com.enigma.sopimart.constant.AppPath;
 import com.enigma.sopimart.dto.request.AuthRequest;
 import com.enigma.sopimart.dto.response.CommonAuthResponse;
-import com.enigma.sopimart.dto.response.CommonResponse;
 import com.enigma.sopimart.dto.response.RegisterResponse;
 import com.enigma.sopimart.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/register" + AppPath.CUSTOMER)
+    @PostMapping(AppPath.REGISTER + AppPath.CUSTOMER)
     public ResponseEntity<?> registerNewCustomer(@RequestBody AuthRequest authRequest) {
         RegisterResponse registerResponse = authService.registerCustomer(authRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
