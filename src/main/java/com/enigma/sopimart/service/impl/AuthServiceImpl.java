@@ -4,12 +4,10 @@ import com.enigma.sopimart.constant.ERole;
 import com.enigma.sopimart.dto.request.AuthRequest;
 import com.enigma.sopimart.dto.response.LoginResponse;
 import com.enigma.sopimart.dto.response.RegisterResponse;
-import com.enigma.sopimart.entity.AppUser;
-import com.enigma.sopimart.entity.Customer;
-import com.enigma.sopimart.entity.Role;
-import com.enigma.sopimart.entity.UserCredential;
+import com.enigma.sopimart.entity.*;
 import com.enigma.sopimart.repository.UserCredentialRepository;
 import com.enigma.sopimart.security.JwtUtil;
+import com.enigma.sopimart.service.AdminService;
 import com.enigma.sopimart.service.AuthService;
 import com.enigma.sopimart.service.CustomerService;
 import com.enigma.sopimart.service.RoleService;
@@ -33,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserCredentialRepository userCredentialRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomerService customerService;
+    private final AdminService adminService;
     private final RoleService roleService;
     private final JwtUtil jwtUtil;
     private final ValidationUtil validationUtil;
@@ -67,6 +66,43 @@ public class AuthServiceImpl implements AuthService {
                     .email(authRequest.getEmail())
                     .build();
             customerService.createNewCustomer(customer);
+
+            return RegisterResponse.builder()
+                    .username(userCredential.getUsername())
+                    .role(userCredential.getRole().getName().toString())
+                    .build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist");
+        }
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    @Override
+    public RegisterResponse registerAdmin(AuthRequest authRequest) {
+        try {
+            validationUtil.validate(authRequest);
+            // TODO 2 : Set role
+            Role role = Role.builder()
+                    .name(ERole.ROLE_ADMIN)
+                    .build();
+            role = roleService.getOrSave(role);
+
+            // TODO 1 : Set credential
+            UserCredential userCredential = UserCredential.builder()
+                    .username(authRequest.getUsername().toLowerCase())
+                    .password(passwordEncoder.encode(authRequest.getPassword()))
+                    .role(role)
+                    .build();
+            userCredentialRepository.saveAndFlush(userCredential);
+
+            // TODO 3 : Set Admin
+            Admin admin = Admin.builder()
+                    .userCredential(userCredential)
+                    .name(authRequest.getName())
+                    .phoneNumber(authRequest.getMobilePhone())
+                    .build();
+            adminService.create(admin);
 
             return RegisterResponse.builder()
                     .username(userCredential.getUsername())

@@ -12,7 +12,6 @@ public interface CustomerService {
 
     CustomerResponse createNewCustomer (Customer customer);
 
-
     CustomerResponse getById (String id);
 
     List<CustomerResponse> getAllCustomer ();
