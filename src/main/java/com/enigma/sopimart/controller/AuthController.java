@@ -3,6 +3,7 @@ package com.enigma.sopimart.controller;
 import com.enigma.sopimart.constant.AppPath;
 import com.enigma.sopimart.dto.request.AuthRequest;
 import com.enigma.sopimart.dto.response.CommonAuthResponse;
+import com.enigma.sopimart.dto.response.LoginResponse;
 import com.enigma.sopimart.dto.response.RegisterResponse;
 import com.enigma.sopimart.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,15 @@ public class AuthController {
                         .statusCode(HttpStatus.CREATED.value())
                         .message("Successfully register")
                         .data(registerResponse).build());
+    }
+
+    @PostMapping(AppPath.LOGIN + AppPath.CUSTOMER)
+    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+        LoginResponse loginResponse = authService.login(authRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CommonAuthResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Successfully login")
+                        .data(loginResponse).build());
     }
 }

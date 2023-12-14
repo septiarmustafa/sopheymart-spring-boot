@@ -9,6 +9,8 @@ public class AppPath {
     public final static String PRODUCT = "/product";
     public final static String AUTH = "/auth";
     public final static String REGISTER = "/register";
+    public final static String LOGIN = "/login";
+
 
 
 

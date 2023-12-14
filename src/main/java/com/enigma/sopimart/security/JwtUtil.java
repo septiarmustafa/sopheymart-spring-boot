@@ -30,7 +30,7 @@ public class JwtUtil {
                     .withIssuer(appName) // info untuk application nama yang kita buat
                     .withSubject(appUser.getId()) // menentukan object yang akan dibuat biasanya dari ID
                     .withExpiresAt(Instant.now().plusSeconds(60)) // menentukan waktu kadaluarsa token nanti, dalam sini kadaluarsanya adalah 60 detik setelah dibuat
-                    .withIssuedAt(Instant.now()) // menetapkan waktu token kaoan dibuat
+                    .withIssuedAt(Instant.now()) // menetapkan waktu token kapan dibuat
                     .withClaim("role", appUser.getRole().name()) // menambahkan claim atau info nama pengguna
                     .sign(algorithm); // ini itu seperti ttd kontrak bahwa algoritma yang kita pakai itu udah pasti HMAC256
             return token;
