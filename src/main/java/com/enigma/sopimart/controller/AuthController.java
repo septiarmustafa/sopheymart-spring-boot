@@ -39,7 +39,7 @@ public class AuthController {
                         .data(registerResponse).build());
     }
 
-    @PostMapping(AppPath.CUSTOMER + AppPath.LOGIN)
+    @PostMapping(AppPath.LOGIN)
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         LoginResponse loginResponse = authService.login(authRequest);
         return ResponseEntity.status(HttpStatus.OK)
