@@ -53,7 +53,7 @@ public class StoreServiceImpl implements StoreService {
                 .address(storeRequest.getAddress())
                 .mobilePhone(storeRequest.getMobilePhone())
                 .build();
-       store = storeRepository.save(store);
+       storeRepository.save(store);
 
         return StoreResponse.builder()
                 .id(store.getId())
@@ -67,24 +67,29 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreResponse updateStore(StoreRequest storeRequest) {
         Store store = storeRepository.findById(storeRequest.getId()).orElse(null);
-        if (store ==null) {
-            return  null;
+        if (store !=null) {
+            store.setName(storeRequest.getName());
+            store.setNoSiup(storeRequest.getNoSiup());
+            store.setAddress(storeRequest.getAddress());
+            store.setMobilePhone(storeRequest.getMobilePhone());
+//            store = Store.builder()
+//                    .id(storeRequest.getId())
+//                    .name(storeRequest.getName())
+//                    .noSiup(storeRequest.getNoSiup())
+//                    .address(storeRequest.getAddress())
+//                    .mobilePhone(storeRequest.getMobilePhone())
+//                    .build();
+            storeRepository.save(store);
+            return StoreResponse.builder()
+                    .id(store.getId())
+                    .name(store.getName())
+                    .noSiup(store.getNoSiup())
+                    .address(store.getAddress())
+                    .mobilePhone(store.getMobilePhone())
+                    .build();
         }
-        store = Store.builder()
-                .id(storeRequest.getId())
-                .name(storeRequest.getName())
-                .noSiup(storeRequest.getNoSiup())
-                .address(storeRequest.getAddress())
-                .mobilePhone(storeRequest.getMobilePhone())
-                .build();
-        store = storeRepository.save(store);
-        return StoreResponse.builder()
-                .id(store.getId())
-                .name(store.getName())
-                .noSiup(store.getNoSiup())
-                .address(store.getAddress())
-                .mobilePhone(store.getMobilePhone())
-                .build();
+        return  null;
+
     }
 
     @Override
