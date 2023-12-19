@@ -10,6 +10,7 @@ import com.enigma.sopimart.repository.ProductRepository;
 import com.enigma.sopimart.service.ProductPriceService;
 import com.enigma.sopimart.service.ProductService;
 import com.enigma.sopimart.service.StoreService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ class ProductServiceImplTest {
     private final StoreService storeService = mock(StoreService.class);
     private final ProductService productService = new ProductServiceImpl(productRepository, storeService, productPriceService);
 
+    @BeforeEach
     public void setUp(){
         // reset mock behavior
         reset(productRepository,storeService,productPriceService);

@@ -23,6 +23,8 @@ import java.util.List;
 @RequestMapping(AppPath.PRODUCT)
 public class ProductController {
 
+
+
     private final ProductService productService;
 
     @PostMapping
@@ -32,7 +34,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonResponse.<ProductResponse>builder()
                         .statusCode(HttpStatus.CREATED.value())
-                        .message("Successfully created new product")
+                        .message("Successfully create new product")
                         .data(productResponse).build());
     }
 

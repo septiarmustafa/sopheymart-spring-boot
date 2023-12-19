@@ -22,7 +22,7 @@ public class CustomerController {
     }
 
     @PutMapping
-    public CustomerResponse updateStore(@RequestBody CustomerRequest CustomerRequest){
+    public CustomerResponse updateCustomer(@RequestBody CustomerRequest CustomerRequest){
         return customerService.updateCustomer(CustomerRequest);
     }
 
