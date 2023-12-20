@@ -12,6 +12,14 @@ public class AppPath {
     public final static String REGISTER = "/register";
     public final static String LOGIN = "/login";
     public final static String POSTS = "/posts";
+    public final static String UPLOAD = "/upload";
+    public final static String DOWNLOAD = "/download";
+    public final static String FILES = "/files";
+    public final static String FILENAME = "/{fileName}";
+
+
+
+
 
 
 
