@@ -1,5 +1,6 @@
 package com.enigma.sopimart.service.impl;
 
+import com.enigma.sopimart.entity.FileStorage;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 
 @Service
 public class FileStorageService {
@@ -24,7 +26,25 @@ public class FileStorageService {
         }
     }
 
-    public String storageFile (MultipartFile file){
+    // contoh return String
+
+//    public String storageFile (MultipartFile file){
+//        String mimeType = file.getContentType();
+//        // check file type just image
+//        if (mimeType == null || (!mimeType.startsWith("image/"))){
+//            throw new RuntimeException("Invalid upload, only upload image");
+//        }
+//        try{
+//            Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
+//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+//            return file.getOriginalFilename();
+//        } catch (Exception e) {
+//            throw new RuntimeException("Could not store " + file.getOriginalFilename() + " please check again " + e);
+//        }
+//    }
+
+    // contoh return FileStorage
+    public FileStorage storageFile (MultipartFile file){
         String mimeType = file.getContentType();
         // check file type just image
         if (mimeType == null || (!mimeType.startsWith("image/"))){
@@ -33,7 +53,10 @@ public class FileStorageService {
         try{
             Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return file.getOriginalFilename();
+            return FileStorage.builder()
+                    .fileName(file.getOriginalFilename())
+                    .dateTime(LocalDateTime.now())
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("Could not store " + file.getOriginalFilename() + " please check again " + e);
         }
