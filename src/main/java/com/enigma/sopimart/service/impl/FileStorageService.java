@@ -1,6 +1,7 @@
 package com.enigma.sopimart.service.impl;
 
 import com.enigma.sopimart.entity.FileStorage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import java.time.LocalDateTime;
 
 @Service
 public class FileStorageService {
-    private final Path fileStorageLocation = Paths.get("/home/user/IdeaProjects/sopimart/src/main/java/com/enigma/sopimart/file");
 
-    public FileStorageService (){
+    private final Path fileStorageLocation;
+
+    public FileStorageService (@Value("${app.sopimart.directory-image-path}") String path){
+        fileStorageLocation = Paths.get(path);
         try{
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception e) {
@@ -50,8 +53,9 @@ public class FileStorageService {
         if (mimeType == null || (!mimeType.startsWith("image/"))){
             throw new RuntimeException("Invalid upload, only upload image");
         }
+        String fileName = file.getOriginalFilename();
         try{
-            Path targetLocation = this.fileStorageLocation.resolve(file.getOriginalFilename());
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return FileStorage.builder()
                     .fileName(file.getOriginalFilename())
