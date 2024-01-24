@@ -27,4 +27,15 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     public ProductPrice findProductPriceIsActive(String productId, Boolean isActive) {
         return productPriceRepository.findByProduct_IdAndIsActive(productId, isActive).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
     }
+
+    @Override
+    public ProductPrice update(ProductPrice updatedProductPrice) {
+        ProductPrice existingProductPrice = getById(updatedProductPrice.getId());
+
+        existingProductPrice.setPrice(updatedProductPrice.getPrice());
+        existingProductPrice.setStock(updatedProductPrice.getStock());
+        existingProductPrice.setIsActive(updatedProductPrice.getIsActive());
+
+        return productPriceRepository.save(existingProductPrice);
+    }
 }

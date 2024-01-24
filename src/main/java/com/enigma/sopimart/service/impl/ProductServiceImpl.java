@@ -51,10 +51,30 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getByIdProduct(String id) {
         Product product = productRepository.findById(id).orElse(null);
-        return product == null ? null : ProductResponse.builder()
+        if (product == null) return null;
+
+        Optional<ProductPrice> productPrice = product.getProductPrice()
+                .stream()
+                .filter(ProductPrice::getIsActive)
+                .findFirst();
+
+        if (productPrice.isEmpty()) return null;
+
+        Store store = productPrice.get().getStore();
+
+        return ProductResponse.builder()
                 .productId(product.getId())
                 .productName(product.getName())
                 .desc(product.getDescription())
+                .price(productPrice.get().getPrice())
+                .stock(productPrice.get().getStock())
+                .store(StoreResponse.builder()
+                        .id(store.getId())
+                        .name(store.getName())
+                        .noSiup(store.getNoSiup())
+                        .address(store.getAddress())
+                        .mobilePhone(store.getMobilePhone())
+                        .build())
                 .build();
     }
 
@@ -130,6 +150,54 @@ public class ProductServiceImpl implements ProductService {
                         .build())
                 .build();
     }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public ProductResponse updateProductAndProductPrice(ProductRequest productRequest) {
+        // Get existing product by ID
+        Product existingProduct = productRepository.findById(productRequest.getProductId()).orElse(null);
+        if (existingProduct == null) {
+            return null; // Product not found
+        }
+
+        // Update product details
+        existingProduct.setName(productRequest.getProductName());
+        existingProduct.setDescription(productRequest.getDesc());
+        productRepository.save(existingProduct);
+
+        // Get existing product price by product ID
+        Optional<ProductPrice> existingProductPriceOptional = existingProduct.getProductPrice()
+                .stream()
+                .filter(ProductPrice::getIsActive)
+                .findFirst();
+
+        if (existingProductPriceOptional.isEmpty()) {
+            return null; // Active product price not found
+        }
+
+        ProductPrice existingProductPrice = existingProductPriceOptional.get();
+        // Update product price details
+        existingProductPrice.setPrice(productRequest.getPrice());
+        existingProductPrice.setStock(productRequest.getStock());
+        productPriceService.update(existingProductPrice);
+
+        // Build and return the updated product response
+        return ProductResponse.builder()
+                .productId(existingProduct.getId())
+                .productName(existingProduct.getName())
+                .desc(existingProduct.getDescription())
+                .price(existingProductPrice.getPrice())
+                .stock(existingProductPrice.getStock())
+                .store(StoreResponse.builder()
+                        .id(existingProductPrice.getStore().getId())
+                        .name(existingProductPrice.getStore().getName())
+                        .noSiup(existingProductPrice.getStore().getNoSiup())
+                        .address(existingProductPrice.getStore().getAddress())
+                        .mobilePhone(existingProductPrice.getStore().getMobilePhone())
+                        .build())
+                .build();
+    }
+
 
     @Override
     public Page<ProductResponse> getAllByNameOrPrice(String name, Long maxPrice, Integer page, Integer size) {

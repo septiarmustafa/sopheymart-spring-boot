@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
-public class CommonResponse<T> {
+public class CommonAuthResponse<T> {
     private Integer status;
     private String message;
     private T data;
-    private PagingResponse paging;
 }

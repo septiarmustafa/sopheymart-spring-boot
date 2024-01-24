@@ -25,7 +25,7 @@ public class Product {
     @Column(name = "address", nullable = false, length = 150)
     private String description;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductPrice> productPrice;
 
 }

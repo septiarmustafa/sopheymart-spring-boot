@@ -15,14 +15,14 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
-//
+
     @PostMapping
     public CustomerResponse createCustomer (@RequestBody CustomerRequest CustomerRequest){
         return customerService.create(CustomerRequest);
     }
 
     @PutMapping
-    public CustomerResponse updateStore(@RequestBody CustomerRequest CustomerRequest){
+    public CustomerResponse updateCustomer(@RequestBody CustomerRequest CustomerRequest){
         return customerService.updateCustomer(CustomerRequest);
     }
 
