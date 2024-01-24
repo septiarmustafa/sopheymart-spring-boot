@@ -48,7 +48,7 @@ class ProductControllerTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
         CommonResponse<ProductResponse> commonResponse = (CommonResponse<ProductResponse>) responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED.value(), commonResponse.getStatusCode());
+        assertEquals(HttpStatus.CREATED.value(), commonResponse.getStatus());
         assertEquals("Successfully create new product", commonResponse.getMessage());
     }
 

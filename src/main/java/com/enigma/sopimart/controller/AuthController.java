@@ -9,14 +9,12 @@ import com.enigma.sopimart.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AppPath.API+AppPath.AUTH)
+@CrossOrigin(origins = "http://localhost:5173/")
 public class AuthController {
     private final AuthService authService;
 
@@ -25,7 +23,7 @@ public class AuthController {
         RegisterResponse registerResponse = authService.registerAdmin(authRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonAuthResponse.builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully register")
                         .data(registerResponse).build());
     }
@@ -34,7 +32,7 @@ public class AuthController {
         RegisterResponse registerResponse = authService.registerCustomer(authRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonAuthResponse.builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully register")
                         .data(registerResponse).build());
     }
@@ -44,7 +42,7 @@ public class AuthController {
         LoginResponse loginResponse = authService.login(authRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonAuthResponse.builder()
-                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK.value())
                         .message("Successfully login")
                         .data(loginResponse).build());
     }

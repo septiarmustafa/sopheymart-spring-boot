@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class CommonAuthResponse<T> {
-    private Integer statusCode;
+    private Integer status;
     private String message;
     private T data;
 }

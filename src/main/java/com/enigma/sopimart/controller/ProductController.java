@@ -5,9 +5,7 @@ import com.enigma.sopimart.dto.request.ProductRequest;
 import com.enigma.sopimart.dto.response.CommonResponse;
 import com.enigma.sopimart.dto.response.PagingResponse;
 import com.enigma.sopimart.dto.response.ProductResponse;
-import com.enigma.sopimart.dto.response.StoreResponse;
 import com.enigma.sopimart.entity.Product;
-import com.enigma.sopimart.service.ProductPriceService;
 import com.enigma.sopimart.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AppPath.PRODUCT)
+@CrossOrigin(origins = "http://localhost:5173/")
 public class ProductController {
 
 
@@ -28,12 +27,11 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) {
         ProductResponse productResponse = productService.createProductAndProductPrice(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonResponse.<ProductResponse>builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully create new product")
                         .data(productResponse).build());
     }
@@ -43,8 +41,17 @@ public class ProductController {
         List<Product> productResponse = productService.getAllProduct();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonResponse.builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully get all product")
+                        .data(productResponse).build());
+    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getByIdProduct (@PathVariable String id){
+        ProductResponse productResponse = productService.getByIdProduct(id);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(CommonResponse.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message("Successfully get product")
                         .data(productResponse).build());
     }
 
@@ -63,10 +70,24 @@ public class ProductController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonResponse.builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully get all product")
                         .data(productResponses.getContent())
                         .paging(pagingResponse)
                         .build());
+    }
+    @DeleteMapping(value = AppPath.ID)
+    public void delete(@PathVariable String id){
+        productService.deleteProduct(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateProduct (@RequestBody ProductRequest productRequest){
+        ProductResponse productResponse = productService.updateProductAndProductPrice(productRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CommonResponse.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Successfully update product")
+                        .data(productResponse).build());
     }
 }

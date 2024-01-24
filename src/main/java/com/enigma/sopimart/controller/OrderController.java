@@ -25,7 +25,7 @@ public class OrderController {
         OrderResponse orderResponse = orderService.createNewOrder(orderRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CommonResponse.builder()
-                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED.value())
                         .message("Successfully create new order")
                         .data(orderResponse).build());
     }
